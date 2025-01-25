@@ -99,7 +99,7 @@ namespace Kafka.Producer
                 }
 
                 Console.WriteLine("----------------------------------------");
-                await Task.Delay(200);
+                await Task.Delay(10);
 
             }
 

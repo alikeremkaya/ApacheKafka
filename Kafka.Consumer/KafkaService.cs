@@ -27,7 +27,7 @@ namespace Kafka.Consumer
                 var consumeResult = consumer.Consume(millisecondsTimeout:5000);
                 if (consumeResult != null)
                 {
-                    Console.WriteLine($"gelen mesaj: {consumeResult.Message.Value}");
+                    Console.WriteLine($"gelen mesaj: Key={consumeResult.Message.Key} Value= {consumeResult.Message.Value}");
                 }
                
             }
