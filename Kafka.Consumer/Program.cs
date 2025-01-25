@@ -1,8 +1,9 @@
 ﻿
+
 using Kafka.Consumer;
 
 Console.WriteLine("Kafka Consumer 1");
-var topicName = "use-case-1.1-topic";
+var topicName = "use-case-3-topic";
 var kafkaService = new KafkaService();
-await kafkaService.CunsumeSimpleMessageWithNullKey(topicName);
+await kafkaService.ConsumeComplexMessageWithIntKey(topicName);
 Console.ReadLine();
