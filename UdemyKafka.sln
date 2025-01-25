@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kafka.Consumer", "Kafka.Consumer\Kafka.Consumer.csproj", "{376923FA-94E5-473D-A8FD-D346CFB0BBBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kafka.Producer", "Kafka.Producer\Kafka.Producer.csproj", "{A63BA953-4A00-4958-A458-A6361BB28A1D}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A20AE683-058E-4478-BA29-14E5C49BBA0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kafka.Consumer2", "Kafka.Consumer2\Kafka.Consumer2.csproj", "{EFC36FC9-A3FF-490F-B5D1-8724FA6C04C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{376923FA-94E5-473D-A8FD-D346CFB0BBBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{376923FA-94E5-473D-A8FD-D346CFB0BBBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{376923FA-94E5-473D-A8FD-D346CFB0BBBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{376923FA-94E5-473D-A8FD-D346CFB0BBBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A63BA953-4A00-4958-A458-A6361BB28A1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A63BA953-4A00-4958-A458-A6361BB28A1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A63BA953-4A00-4958-A458-A6361BB28A1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A63BA953-4A00-4958-A458-A6361BB28A1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A20AE683-058E-4478-BA29-14E5C49BBA0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A20AE683-058E-4478-BA29-14E5C49BBA0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A20AE683-058E-4478-BA29-14E5C49BBA0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A20AE683-058E-4478-BA29-14E5C49BBA0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFC36FC9-A3FF-490F-B5D1-8724FA6C04C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFC36FC9-A3FF-490F-B5D1-8724FA6C04C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFC36FC9-A3FF-490F-B5D1-8724FA6C04C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFC36FC9-A3FF-490F-B5D1-8724FA6C04C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
