@@ -305,18 +305,8 @@ namespace Kafka.Consumer
 
                 if (consumeResult != null)
                 {
-
-
-                  
+                                      
                     Console.WriteLine($"Message Timestamp:{consumeResult.Message.Timestamp.UtcDateTime}");
-
-
-
-
-
-
-
-
 
                 }
                 await Task.Delay(10);
@@ -325,6 +315,54 @@ namespace Kafka.Consumer
 
 
         }
+        internal async Task ConsumeMessageFromSpecificPartition(string topicName)
+        {
+            if (string.IsNullOrWhiteSpace(topicName))
+            {
+                throw new ArgumentException("Topic name cannot be null, empty, or whitespace.", nameof(topicName));
+            }
+
+            if (!await TopicExists(topicName))
+            {
+                Console.WriteLine($"Error: Topic '{topicName}' does not exist on the Kafka server.");
+                return;
+            }
+
+            var config = new ConsumerConfig()
+            {
+                BootstrapServers = _bootstrapServers,
+                GroupId = "use-case-2-group-1",
+                AutoOffsetReset = AutoOffsetReset.Earliest
+            };
+
+            var consumer = new ConsumerBuilder<Null, string>(config).Build();
+                
+
+
+            consumer.Assign(new TopicPartition(topicName, new Partition(2)));
+
+
+            consumer.Subscribe(topicName);
+
+            while (true)
+            {
+
+                var consumeResult = consumer.Consume(5000);
+
+                if (consumeResult != null)
+                {
+
+                    Console.WriteLine($"Message Timestamp:{consumeResult.Message.Timestamp.UtcDateTime}");
+
+                }
+                await Task.Delay(10);
+            }
+
+
+
+        }
+
+
     }
 
 }
