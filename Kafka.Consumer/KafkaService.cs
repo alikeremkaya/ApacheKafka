@@ -123,7 +123,7 @@ namespace Kafka.Consumer
                 // We check whether the consumeResult is null or not. If it is not null, we write the message to the console.
                 if (consumeResult != null)
                 {
-                    var orderCreatedEvent = consumeResult.Message.Value;    
+                    var orderCreatedEvent = consumeResult.Message.Value;
                     Console.WriteLine($"gelen mesaj :{orderCreatedEvent.UserId}-{orderCreatedEvent.OrderCode}-{orderCreatedEvent.TotalPrice}");
                 }
                 await Task.Delay(10);
@@ -149,5 +149,182 @@ namespace Kafka.Consumer
             }
         }
 
+        internal async Task ConsumeComplexMessageWithIntAndHeader(string topicName)
+        {
+            if (string.IsNullOrWhiteSpace(topicName))
+            {
+                throw new ArgumentException("Topic name cannot be null, empty, or whitespace.", nameof(topicName));
+            }
+
+            if (!await TopicExists(topicName))
+            {
+                Console.WriteLine($"Error: Topic '{topicName}' does not exist on the Kafka server.");
+                return;
+            }
+
+            var config = new ConsumerConfig()
+            {
+                BootstrapServers = _bootstrapServers,
+                GroupId = "use-case-2-group-1",
+                AutoOffsetReset = AutoOffsetReset.Earliest
+            };
+
+            var consumer = new ConsumerBuilder<int, OrderCreatedEvent>(config)
+                .SetValueDeserializer(new CustomValueDeSerializer<OrderCreatedEvent>())
+                .Build();
+
+            consumer.Subscribe(topicName);
+
+            while (true)
+            {
+                try
+                {
+                    var consumeResult = consumer.Consume(5000);
+
+                    if (consumeResult != null)
+                    {
+                        var headers = consumeResult.Message.Headers;
+                        string correlationId = null;
+                        string version = null;
+
+                        if (headers.TryGetLastBytes("correlation_id", out var correlationIdBytes))
+                        {
+                            correlationId = Encoding.UTF8.GetString(correlationIdBytes);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Warning: 'correlationId' header is missing.");
+                        }
+
+                        if (headers.TryGetLastBytes("version", out var versionBytes))
+                        {
+                            version = Encoding.UTF8.GetString(versionBytes);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Warning: 'version' header is missing.");
+                        }
+
+                        Console.WriteLine($"Headers: correlationId={correlationId ?? "N/A"}, version={version ?? "N/A"}");
+
+                        var orderCreatedEvent = consumeResult.Message.Value;
+                        Console.WriteLine($"Received message: UserId={orderCreatedEvent.UserId}, OrderCode={orderCreatedEvent.OrderCode}, TotalPrice={orderCreatedEvent.TotalPrice}");
+                    }
+                }
+                catch (ConsumeException ex)
+                {
+                    Console.WriteLine($"Error consuming message: {ex.Error.Reason}");
+                }
+
+                await Task.Delay(10);
+            }
+        }
+        internal async Task ConsumeComplexMessageWithComplexKey(string topicName)
+        {
+            if (string.IsNullOrWhiteSpace(topicName))
+            {
+                throw new ArgumentException("Topic name cannot be null, empty, or whitespace.", nameof(topicName));
+            }
+
+            if (!await TopicExists(topicName))
+            {
+                Console.WriteLine($"Error: Topic '{topicName}' does not exist on the Kafka server.");
+                return;
+            }
+
+            var config = new ConsumerConfig()
+            {
+                BootstrapServers = _bootstrapServers,
+                GroupId = "use-case-2-group-1",
+                AutoOffsetReset = AutoOffsetReset.Earliest
+            };
+
+            var consumer = new ConsumerBuilder<MessageKey, OrderCreatedEvent>(config)
+                .SetValueDeserializer(new CustomValueDeSerializer<OrderCreatedEvent>()).SetKeyDeserializer(new CustomKeyDeSerializer<MessageKey>()).Build();
+
+
+            consumer.Subscribe(topicName);
+
+            while (true)
+            {
+
+                var consumeResult = consumer.Consume(5000);
+
+                if (consumeResult != null)
+                {
+                    var messageKey = consumeResult.Message.Key;
+                    Console.WriteLine($"gelen mesaj(key)=> key1 :{messageKey.key1}, key2{messageKey.key2}");
+                    var orderCreatedEvent = consumeResult.Message.Value;
+                    Console.WriteLine($"gelen mesaj(value) : {orderCreatedEvent.UserId} - {orderCreatedEvent.OrderCode} - {orderCreatedEvent.TotalPrice} ");
+
+
+
+
+
+
+
+
+
+                }
+                await Task.Delay(10);
+            }
+
+
+           
+        }
+        internal async Task ConsumeMessageWithTimestamp(string topicName)
+        {
+            if (string.IsNullOrWhiteSpace(topicName))
+            {
+                throw new ArgumentException("Topic name cannot be null, empty, or whitespace.", nameof(topicName));
+            }
+
+            if (!await TopicExists(topicName))
+            {
+                Console.WriteLine($"Error: Topic '{topicName}' does not exist on the Kafka server.");
+                return;
+            }
+
+            var config = new ConsumerConfig()
+            {
+                BootstrapServers = _bootstrapServers,
+                GroupId = "use-case-2-group-1",
+                AutoOffsetReset = AutoOffsetReset.Earliest
+            };
+
+            var consumer = new ConsumerBuilder<MessageKey, OrderCreatedEvent>(config)
+                .SetValueDeserializer(new CustomValueDeSerializer<OrderCreatedEvent>()).SetKeyDeserializer(new CustomKeyDeSerializer<MessageKey>()).Build();
+
+
+            consumer.Subscribe(topicName);
+
+            while (true)
+            {
+
+                var consumeResult = consumer.Consume(5000);
+
+                if (consumeResult != null)
+                {
+
+
+                  
+                    Console.WriteLine($"Message Timestamp:{consumeResult.Message.Timestamp.UtcDateTime}");
+
+
+
+
+
+
+
+
+
+                }
+                await Task.Delay(10);
+            }
+
+
+
+        }
     }
+
 }
