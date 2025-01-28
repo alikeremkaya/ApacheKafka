@@ -3,7 +3,7 @@
 using Kafka.Consumer;
 
 Console.WriteLine("Kafka Consumer 1");
-var topicName = "use-case-4-topic";
+var topicName = "ack-topic";
 var kafkaService = new KafkaService();
-await kafkaService.ConsumeMessageFromSpecificPartitionOffset(topicName);
+await kafkaService.ConsumeMessageWithAct(topicName);
 Console.ReadLine();
