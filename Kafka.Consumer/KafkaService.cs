@@ -362,6 +362,50 @@ namespace Kafka.Consumer
 
         }
 
+        internal async Task ConsumeMessageFromSpecificPartitionOffset(string topicName)
+        {
+            if (string.IsNullOrWhiteSpace(topicName))
+            {
+                throw new ArgumentException("Topic name cannot be null, empty, or whitespace.", nameof(topicName));
+            }
+
+            if (!await TopicExists(topicName))
+            {
+                Console.WriteLine($"Error: Topic '{topicName}' does not exist on the Kafka server.");
+                return;
+            }
+
+            var config = new ConsumerConfig()
+            {
+                BootstrapServers = _bootstrapServers,
+                GroupId = "group-2",
+                AutoOffsetReset = AutoOffsetReset.Earliest
+            };
+
+            var consumer = new ConsumerBuilder<Null, string>(config).Build();
+
+
+
+            consumer.Assign(new TopicPartitionOffset(topicName, 2, 4));
+
+
+            consumer.Subscribe(topicName);
+
+            while (true)
+            {
+
+                var consumeResult = consumer.Consume(5000);
+
+                if (consumeResult != null)
+                {
+
+                    Console.WriteLine($"Message Timestamp:{consumeResult.Message.Value}");
+
+                }
+                await Task.Delay(10);
+            }
+        }
+
 
     }
 

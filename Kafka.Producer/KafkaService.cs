@@ -298,7 +298,7 @@ namespace Kafka.Producer
                .Build();
 
 
-            foreach (var item in Enumerable.Range(1, 3))
+            foreach (var item in Enumerable.Range(1, 30))
             {
                 var orderCreatedEvent = new OrderCreatedEvent()
                 {
@@ -316,7 +316,7 @@ namespace Kafka.Producer
                     Value = $"Mesaj{item}"
                 };
 
-                var result = await producer.ProduceAsync(topicName, message);
+                var result = await producer.ProduceAsync(topicPartition, message);
 
                 foreach (var propertyInfo in result.GetType().GetProperties())
                 {
@@ -327,5 +327,8 @@ namespace Kafka.Producer
                 await Task.Delay(10);
             }
         }
+
+
+
     }
 }
