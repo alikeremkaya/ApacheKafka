@@ -406,6 +406,56 @@ namespace Kafka.Consumer
             }
         }
 
+        internal async Task ConsumeMessageWithAct(string topicName)
+        {
+            if (string.IsNullOrWhiteSpace(topicName))
+            {
+                throw new ArgumentException("Topic name cannot be null, empty, or whitespace.", nameof(topicName));
+            }
+
+            if (!await TopicExists(topicName))
+            {
+                Console.WriteLine($"Error: Topic '{topicName}' does not exist on the Kafka server.");
+                return;
+            }
+
+            var config = new ConsumerConfig()
+            {
+                BootstrapServers = _bootstrapServers,
+                GroupId = "group-2",
+                AutoOffsetReset = AutoOffsetReset.Earliest,
+                EnableAutoCommit = true
+
+            };
+
+            var consumer = new ConsumerBuilder<Null, string>(config).Build();
+
+            consumer.Subscribe(topicName);
+
+            while (true)
+            {
+
+                var consumeResult = consumer.Consume(5000);
+
+                if (consumeResult != null)
+                {
+                    try
+                    {
+                        Console.WriteLine($"Message Timestamp:{consumeResult.Message.Value}");
+                        consumer.Commit(consumeResult);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
+                   
+
+                }
+                await Task.Delay(10);
+            }
+        }
+
 
     }
 

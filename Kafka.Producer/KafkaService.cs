@@ -328,7 +328,47 @@ namespace Kafka.Producer
             }
         }
 
+        internal async Task SendMessageWithAck(string topicName)
+        {
+            var config = new ProducerConfig()
+            {
+                BootstrapServers = "localhost:9094",
+                Acks = Acks.None
+            };
 
+            using var producer = new ProducerBuilder<Null, string>(config)
+               .Build();
+
+
+            foreach (var item in Enumerable.Range(1, 30))
+            {
+                var orderCreatedEvent = new OrderCreatedEvent()
+                {
+                    OrderCode = Guid.NewGuid().ToString(),
+                    TotalPrice = item * 100,
+                    UserId = 1
+                };
+
+              
+
+
+
+                var message = new Message<Null, string>()
+                {
+                    Value = $"Mesaj{item}"
+                };
+
+                var result = await producer.ProduceAsync(topicName, message);
+
+                foreach (var propertyInfo in result.GetType().GetProperties())
+                {
+                    Console.WriteLine($"{propertyInfo.Name}:{propertyInfo.GetValue(result)}");
+                }
+
+                Console.WriteLine("----------------------------------------");
+                await Task.Delay(10);
+            }
+        }
 
     }
 }
