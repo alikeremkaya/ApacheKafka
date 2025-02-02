@@ -7,9 +7,9 @@ Console.WriteLine("Kafka Producer!");
 
 
 var kafkaService = new KafkaService();
-var topicName= "ack-topic";
-await kafkaService.CreateTopicAsync(topicName);
-await kafkaService.SendMessageWithAck(topicName);
+var topicName= "mycluster-topic";
+await kafkaService.CreateTopicRetryWithClusterAsync(topicName);
+//await kafkaService.SendMessageToCluster(topicName);
 
 
 

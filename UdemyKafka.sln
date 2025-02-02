@@ -11,6 +11,12 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kafka.Consumer2", "Kafka.Consumer2\Kafka.Consumer2.csproj", "{EFC36FC9-A3FF-490F-B5D1-8724FA6C04C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.API", "..\Order.API\Order.API.csproj", "{0F8038CD-FC1D-47A0-9174-BF02EF922928}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stock.API", "..\Stock.API\Stock.API.csproj", "{569C40AB-F331-48FE-B7E3-D89727CD407D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Events", "..\Shared.Events\Shared.Events.csproj", "{A08B9193-BC62-45FF-A8A8-B91D7D836852}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +39,18 @@ Global
 		{EFC36FC9-A3FF-490F-B5D1-8724FA6C04C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFC36FC9-A3FF-490F-B5D1-8724FA6C04C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFC36FC9-A3FF-490F-B5D1-8724FA6C04C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F8038CD-FC1D-47A0-9174-BF02EF922928}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F8038CD-FC1D-47A0-9174-BF02EF922928}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F8038CD-FC1D-47A0-9174-BF02EF922928}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F8038CD-FC1D-47A0-9174-BF02EF922928}.Release|Any CPU.Build.0 = Release|Any CPU
+		{569C40AB-F331-48FE-B7E3-D89727CD407D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{569C40AB-F331-48FE-B7E3-D89727CD407D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{569C40AB-F331-48FE-B7E3-D89727CD407D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{569C40AB-F331-48FE-B7E3-D89727CD407D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A08B9193-BC62-45FF-A8A8-B91D7D836852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A08B9193-BC62-45FF-A8A8-B91D7D836852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A08B9193-BC62-45FF-A8A8-B91D7D836852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A08B9193-BC62-45FF-A8A8-B91D7D836852}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

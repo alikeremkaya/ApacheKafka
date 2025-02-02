@@ -11,7 +11,7 @@ namespace Kafka.Consumer
 {
     internal class KafkaService
     {
-        private readonly string _bootstrapServers = "localhost:9094";
+        private readonly string _bootstrapServers = "localhost:9094,localhost:7000,localhost:7001,localhost:7002";
         internal async Task ConsumeSimpleMessageWithNullKey(string topicName)
         {
             // We check whether the topicName is null, empty, or whitespace. If it is, we throw an exception to inform the user.
@@ -450,6 +450,56 @@ namespace Kafka.Consumer
                         throw;
                     }
                    
+
+                }
+                await Task.Delay(10);
+            }
+        }
+
+        internal async Task ConsumeMessageFromCluster(string topicName)
+        {
+            if (string.IsNullOrWhiteSpace(topicName))
+            {
+                throw new ArgumentException("Topic name cannot be null, empty, or whitespace.", nameof(topicName));
+            }
+
+            if (!await TopicExists(topicName))
+            {
+                Console.WriteLine($"Error: Topic '{topicName}' does not exist on the Kafka server.");
+                return;
+            }
+
+            var config = new ConsumerConfig()
+            {
+                BootstrapServers = "localhost:7000,localhost:7001,localhost:7002",
+                GroupId = "group-x",
+                AutoOffsetReset = AutoOffsetReset.Earliest,
+                EnableAutoCommit = false
+
+            };
+
+            var consumer = new ConsumerBuilder<Null, string>(config).Build();
+
+            consumer.Subscribe(topicName);
+
+            while (true)
+            {
+
+                var consumeResult = consumer.Consume(5000);
+
+                if (consumeResult != null)
+                {
+                    try
+                    {
+                        Console.WriteLine($"Message Timestamp:{consumeResult.Message.Value}");
+                        consumer.Commit(consumeResult);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
+
 
                 }
                 await Task.Delay(10);
