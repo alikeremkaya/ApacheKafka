@@ -10,10 +10,12 @@ namespace Stock.API.BackGroundServices
         private IConsumer<string, OrderCreatedEvent>? _consumer;
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            var consumer = new ConsumerBuilder<string, OrderCreatedEvent>(bus.GetConsumerConfig(BusConstants.OrderCreatedEventTopicGroupId))
-                .SetValueDeserializer(new CustomValueDeSerializer<OrderCreatedEvent>()).Build();
+            // Yerel değişken yerine _consumer'a atama yapın!
+            _consumer = new ConsumerBuilder<string, OrderCreatedEvent>(bus.GetConsumerConfig(BusConstants.OrderCreatedEventTopicGroupId))
+                .SetValueDeserializer(new CustomValueDeSerializer<OrderCreatedEvent>())
+                .Build();
 
-            consumer.Subscribe(BusConstants.OrderCreatedEventTopicName);
+            _consumer.Subscribe(BusConstants.OrderCreatedEventTopicName);
             return base.StartAsync(cancellationToken);
         }
 
@@ -24,24 +26,33 @@ namespace Stock.API.BackGroundServices
                 if (_consumer == null)
                 {
                     logger.LogError("Consumer is not initialized.");
-                    return;
+                    continue; // return yerine döngüyü sürdürün!
                 }
 
-                var consumeResult = _consumer.Consume(5000);
-                if (consumeResult != null)
+                try
                 {
-                    try
-                    {
-                        var orderCreatedEvent = consumeResult.Message.Value;
-                        // decrease stock count
-                        logger.LogInformation($"user id:{orderCreatedEvent.UserId} order code: {orderCreatedEvent.OrderCode}, total price: {orderCreatedEvent.TotalPrice}");
-                    }
-                    catch (Exception e)
-                    {
-                        logger.LogError(e.Message);
-                    }
-                    await Task.Delay(10, stoppingToken);
+                    // Consume işlemine CancellationToken ekleyin
+                    var consumeResult = _consumer.Consume(stoppingToken);
+
+                    // Mesaj işleme kodu...
+                    var orderCreatedEvent = consumeResult.Message.Value;
+                    logger.LogInformation($"User ID: {orderCreatedEvent.UserId}, Order Code: {orderCreatedEvent.OrderCode}");
                 }
+                catch (ConsumeException ex)
+                {
+                    logger.LogError($"Consume error: {ex.Error.Reason}");
+                }
+                catch (OperationCanceledException)
+                {
+                    logger.LogInformation("Consumer stopped.");
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Unexpected error");
+                }
+
+                await Task.Delay(10, stoppingToken);
             }
         }
     }
