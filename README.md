@@ -69,7 +69,3 @@ Bu depo, C# dilinde bir Kafka tüketici ve üretici uygulamasının implementasy
 ## Katkı Sağlama
 
 Katkılar memnuniyetle karşılanır! Herhangi bir değişiklik için lütfen bir issue açın veya bir pull request gönderin.
-
-## Lisans
-
-Bu proje MIT Lisansı altında lisanslanmıştır.
